@@ -23,7 +23,7 @@ public class SQLTableCreationFactory {
                         "  address varchar(500) NOT NULL," +
                         "  PRIMARY KEY (PNC)," +
                         "  UNIQUE KEY PNC_UNIQUE (PNC)," +
-                        "  account_id int(11) NOT NULL," +
+                        "  account_id int(11)," +
                         "  INDEX account_id_idx (account_id ASC)," +
                         "  CONSTRAINT account_id" +
                         "    FOREIGN KEY (account_id)" +

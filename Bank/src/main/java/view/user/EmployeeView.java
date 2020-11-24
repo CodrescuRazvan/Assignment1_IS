@@ -10,6 +10,7 @@ public class EmployeeView extends JFrame {
 
     private JButton btnClientInfo;
     private JButton btnClientAccount;
+    private JButton btnBack;
 
     public EmployeeView() throws HeadlessException{
         setSize(300, 300);
@@ -18,6 +19,7 @@ public class EmployeeView extends JFrame {
         setLayout(new BoxLayout(getContentPane(), Y_AXIS));
         add(btnClientInfo);
         add(btnClientAccount);
+        add(btnBack);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
     }
@@ -25,6 +27,7 @@ public class EmployeeView extends JFrame {
     private void initializeFields() {
         btnClientInfo = new JButton("Manage Client Informations");
         btnClientAccount = new JButton("Manage Client Account");
+        btnBack = new JButton("Back");
     }
 
     public void setClientInfoButtonListener(ActionListener clientInfoButtonListener) {
@@ -33,5 +36,9 @@ public class EmployeeView extends JFrame {
 
     public void setClientAccountButtonListener(ActionListener clientAccountButtonListener) {
         btnClientAccount.addActionListener(clientAccountButtonListener);
+    }
+
+    public void setBackButtonListener(ActionListener backButtonListener){
+        btnBack.addActionListener(backButtonListener);
     }
 }

@@ -11,6 +11,7 @@ public class ClientAccountView extends JFrame {
     private JButton btnCreate;
     private JButton btnUpdate;
     private JButton btnDelete;
+    private JButton btnTransfer;
     private JButton btnView;
     private JButton btnBack;
 
@@ -19,10 +20,12 @@ public class ClientAccountView extends JFrame {
         setLocationRelativeTo(null);
         initializeFields();
         setLayout(new BoxLayout(getContentPane(), Y_AXIS));
+        //if(employee.getRoles().getRights().contains("create_account")
         add(btnCreate);
         add(btnUpdate);
         add(btnDelete);
         add(btnView);
+        add(btnTransfer);
         add(btnBack);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
@@ -33,6 +36,7 @@ public class ClientAccountView extends JFrame {
         btnUpdate = new JButton("Update Existing Client Account");
         btnDelete = new JButton("Delete Existing Client Account");
         btnView = new JButton("View Client Account Informations");
+        btnTransfer = new JButton("Transfer Money Between Accounts");
         btnBack = new JButton("Back");
     }
 
@@ -54,5 +58,9 @@ public class ClientAccountView extends JFrame {
 
     public void setBackButtonListener(ActionListener backButtonListener) {
         btnBack.addActionListener(backButtonListener);
+    }
+
+    public void setTransferButtonListener(ActionListener transferButtonListener){
+        btnTransfer.addActionListener(transferButtonListener);
     }
 }

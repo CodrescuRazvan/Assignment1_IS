@@ -3,6 +3,8 @@ package factory;
 import database.DBConnectionFactory;
 import repository.account.AccountRepository;
 import repository.account.AccountRepositoryMySQL;
+import repository.admin.AdminRepository;
+import repository.admin.AdminRepositoryMySQL;
 import repository.client.ClientRepository;
 import repository.client.ClientRepositoryMySQL;
 import repository.security.RightsRolesRepository;
@@ -22,6 +24,7 @@ public class ComponentFactory {
     private final RightsRolesRepository rightsRolesRepository;
     private final ClientRepository clientRepository;
     private final AccountRepository accountRepository;
+    private final AdminRepository adminRepository;
 
     private static ComponentFactory instance;
 
@@ -38,6 +41,7 @@ public class ComponentFactory {
         this.userRepository = new UserRepositoryMySQL(connection, rightsRolesRepository);
         this.accountRepository = new AccountRepositoryMySQL(connection);
         this.clientRepository = new ClientRepositoryMySQL(connection);
+        this.adminRepository = new AdminRepositoryMySQL(connection);
         this.authenticationService = new AuthenticationServiceMySQL(this.userRepository, this.rightsRolesRepository);
     }
 
@@ -59,5 +63,9 @@ public class ComponentFactory {
 
     public ClientRepository getClientRepository(){
         return clientRepository;
+    }
+
+    public AdminRepository getAdminRepository() {
+        return adminRepository;
     }
 }

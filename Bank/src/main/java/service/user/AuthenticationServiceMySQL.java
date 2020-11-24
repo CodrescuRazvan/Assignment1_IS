@@ -5,6 +5,7 @@ import model.User;
 import model.builder.UserBuilder;
 import model.validation.Notification;
 import model.validation.UserValidator;
+import repository.admin.AdminRepository;
 import repository.security.RightsRolesRepository;
 import repository.user.AuthenticationException;
 import repository.user.UserRepository;

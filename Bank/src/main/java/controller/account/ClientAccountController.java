@@ -69,4 +69,13 @@ public class ClientAccountController {
             new ViewAccountController(new ViewAccountView(ComponentFactory.instance(false)));
         }
     }
+
+    private class TransferButtonListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            clientAccountView.dispose();
+            new MoneyTransferController()
+        }
+    }
 }

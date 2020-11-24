@@ -19,4 +19,6 @@ public interface AccountRepository {
     void updateAccount(Account account);
 
     void removeAll();
+
+    void transferMoney(Account account1, Account account2);
 }

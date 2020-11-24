@@ -108,6 +108,12 @@ public class AccountRepositoryMySQL implements AccountRepository{
         }
     }
 
+    @Override
+    public void transferMoney(Account account1, Account account2){
+
+    }
+
+
     private Account getAccountFromResultSet(ResultSet rs) throws SQLException {
         return new AccountBuilder()
                 .setId(rs.getLong("id"))

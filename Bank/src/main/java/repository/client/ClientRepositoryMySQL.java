@@ -62,12 +62,12 @@ public class ClientRepositoryMySQL implements ClientRepository {
     public boolean saveClient(Client client) {
         try {
             PreparedStatement insertStatement = connection
-                    .prepareStatement("INSERT INTO client values (?, ?, ?, ?, ?)");
+                    .prepareStatement("INSERT INTO client values (?, ?, ?, ?, null)");
             insertStatement.setString(1, client.getPNC().toString());
             insertStatement.setString(2, client.getName());
             insertStatement.setString(3, client.getCardNumber());
             insertStatement.setString(4, client.getAddress());
-            insertStatement.setLong(5, client.getClientAccount().getId());
+            //insertStatement.setLong(5, client.getClientAccount().getId());
             insertStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
