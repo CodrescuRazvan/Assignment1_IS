@@ -6,11 +6,13 @@ import java.awt.event.ActionListener;
 
 public class AdminView extends JFrame{
 
-    private JTextField tfId;
+
     private JTextField tfUsername;
     private JTextField tfPassword;
 
+    private JTextField tfId;
     private JLabel lbId;
+
     private JLabel lbUsername;
     private JLabel lbPassword;
 
@@ -18,6 +20,7 @@ public class AdminView extends JFrame{
     private JButton btnUpdate;
     private JButton btnDelete;
     private JButton btnView;
+    private JButton btnGenerateReport;
 
     private JButton btnBack;
 
@@ -25,7 +28,7 @@ public class AdminView extends JFrame{
         setSize(300, 300);
         setLocationRelativeTo(null);
         initializeFields();
-        setLayout(new GridLayout(6, 2));
+        setLayout(new GridLayout(7, 2));
 
         add(lbId);
         add(tfId);
@@ -42,6 +45,7 @@ public class AdminView extends JFrame{
         add(btnDelete);
         add(btnView);
 
+        add(btnGenerateReport);
         add(btnBack);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
@@ -60,6 +64,7 @@ public class AdminView extends JFrame{
         btnUpdate = new JButton("Update");
         btnDelete = new JButton("Delete");
         btnView = new JButton("View");
+        btnGenerateReport = new JButton("Generate report");
 
         btnBack = new JButton("Back");
     }
@@ -94,5 +99,9 @@ public class AdminView extends JFrame{
 
     public void setViewButtonListener(ActionListener viewButtonListener){
         btnView.addActionListener(viewButtonListener);
+    }
+
+    public void setGenerateButtonListener(ActionListener generateButtonListener){
+        btnGenerateReport.addActionListener(generateButtonListener);
     }
 }

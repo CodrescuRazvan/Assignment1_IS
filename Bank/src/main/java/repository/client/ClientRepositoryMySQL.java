@@ -1,5 +1,6 @@
 package repository.client;
 
+import factory.ComponentFactory;
 import model.Account;
 import model.Client;
 import model.builder.ClientBuilder;
@@ -15,10 +16,9 @@ import repository.account.AccountRepositoryMySQL;
 public class ClientRepositoryMySQL implements ClientRepository {
 
     private final Connection connection;
-
     private AccountRepository accountRepository;
 
-    public ClientRepositoryMySQL(Connection connection, AccountRepository accountRepository) {
+    public ClientRepositoryMySQL(Connection connection) {
         this.connection = connection;
         this.accountRepository = accountRepository;
     }
@@ -30,7 +30,10 @@ public class ClientRepositoryMySQL implements ClientRepository {
             Statement statement = connection.createStatement();
             String sql = "Select * from client";
             ResultSet rs = statement.executeQuery(sql);
-
+            ComponentFactory componentFactory = ComponentFactory.instance(false);
+            List<String> statements = componentFactory.getStatements();
+            statements.add("Client info's viewed");
+            componentFactory.setStatements(statements);
             while (rs.next()) {
                 clients.add(getClientFromResultSet(rs));
             }
@@ -63,13 +66,23 @@ public class ClientRepositoryMySQL implements ClientRepository {
     public boolean saveClient(Client client) {
         try {
             PreparedStatement insertStatement = connection
-                    .prepareStatement("INSERT INTO client values (?, ?, ?, ?, null)");
+                    .prepareStatement("INSERT INTO client values (?, ?, ?, ?, 0)");
             insertStatement.setString(1, client.getPNC().toString());
             insertStatement.setString(2, client.getName());
             insertStatement.setString(3, client.getCardNumber());
             insertStatement.setString(4, client.getAddress());
-            //insertStatement.setLong(5, client.getClientAccount().getId());
             insertStatement.executeUpdate();
+            ComponentFactory componentFactory = ComponentFactory.instance(false);
+            List<String> statement = componentFactory.getStatements();
+            statement.add("New client saved with data : "
+                    + client.getPNC()
+                    + ", "
+                    + client.getName()
+                    + ", "
+                    + client.getCardNumber()
+                    + ", "
+                    + client.getAddress());
+            componentFactory.setStatements(statement);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -82,21 +95,31 @@ public class ClientRepositoryMySQL implements ClientRepository {
         try{
             Statement statement = connection.createStatement();
             String sql;
+            ComponentFactory componentFactory = ComponentFactory.instance(false);
+            List<String> statements = componentFactory.getStatements();
             if(!name.equals("")) {
                 sql = "UPDATE client SET name = \'" + name +"\' WHERE PNC = " + PNC;
                 statement.executeUpdate(sql);
+                statements.add("Updated client with PNC " + PNC + " name's " + name);
+                componentFactory.setStatements(statements);
             }
             if(!cardNumber.equals("")) {
                 sql = "UPDATE client SET card_number = " + Long.parseLong(cardNumber) +" WHERE PNC = " + PNC;
                 statement.executeUpdate(sql);
+                statements.add("Updated client with PNC " + PNC + " card number " + cardNumber);
+                componentFactory.setStatements(statements);
             }
             if(!address.equals("")) {
                 sql = "UPDATE client SET address = \'" + address +"\' WHERE PNC = " + PNC;
                 statement.executeUpdate(sql);
+                statements.add("Updated client with PNC " + PNC + " address' " + address);
+                componentFactory.setStatements(statements);
             }
             if(client.getId() != null) {
                 sql = "UPDATE client SET account_id = " + client.getId() +" WHERE PNC = " + PNC;
                 statement.executeUpdate(sql);
+                statements.add("Updated client with PNC " + PNC + " account ID " + client.getId());
+                componentFactory.setStatements(statements);
             }
         } catch (SQLException e) {
             e.printStackTrace();

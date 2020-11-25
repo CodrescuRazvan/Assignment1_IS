@@ -13,20 +13,18 @@ import view.user.LoginView;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class AdminController {
 
-    //Pentru generarea rapoartelor cu activitatile executate de clienti in perdioada recenta
-    //se poate face un vector de activitati si de fiecare data cand apas un buton si
-    //operatia se executa cu succes atunci sa imi fie introdusa actiunea in vector
-    //si in admin sa fac display la vectorul respectiv pana la momentul actual(ultimele 15- 20 de operatii executate
-    //pentru a nu le retine pe toate)
     private final AdminView adminView;
     private final AuthenticationService authenticationService;
     private final AdminRepository adminRepository;
+    private final ComponentFactory componentFactory;
 
     public AdminController(AdminView adminView, ComponentFactory componentFactory) {
         this.adminView = adminView;
+        this.componentFactory = componentFactory;
         this.adminRepository = componentFactory.getAdminRepository();
         this.authenticationService = componentFactory.getAuthenticationService();
         adminView.setCreateButtonListener(new AdminController.RegisterButtonListener());
@@ -34,6 +32,7 @@ public class AdminController {
         adminView.setUpdateButtonListener(new AdminController.UpdateButtonListener());
         adminView.setDeleteButtonListener(new AdminController.DeleteButtonListener());
         adminView.setViewButtonListener(new AdminController.ViewButtonListener());
+        adminView.setGenerateButtonListener(new AdminController.ReportsButtonListener());
     }
 
     private class BackButtonListener implements ActionListener {
@@ -113,6 +112,19 @@ public class AdminController {
         public void actionPerformed(ActionEvent e) {
             adminView.dispose();
             new AdminViewController(new AdminViewView(ComponentFactory.instance(false)));
+        }
+    }
+
+    private class ReportsButtonListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                adminRepository.generateReport();
+                JOptionPane.showMessageDialog(adminView.getContentPane(), "Report generated!");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         }
     }
 }

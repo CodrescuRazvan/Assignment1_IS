@@ -4,6 +4,7 @@ import model.Account;
 import model.User;
 import repository.EntityNotFoundException;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface AdminRepository {
@@ -17,4 +18,6 @@ public interface AdminRepository {
     void deleteEmployee(Long id);
 
     void updateEmployee(User user);
+
+    public void generateReport() throws IOException;
 }

@@ -1,5 +1,6 @@
 package repository.account;
 
+import factory.ComponentFactory;
 import model.Account;
 import model.builder.AccountBuilder;
 import repository.EntityNotFoundException;
@@ -25,7 +26,10 @@ public class AccountRepositoryMySQL implements AccountRepository{
             Statement statement = connection.createStatement();
             String sql = "Select * from account";
             ResultSet rs = statement.executeQuery(sql);
-
+            ComponentFactory componentFactory = ComponentFactory.instance(false);
+            List<String> statements = componentFactory.getStatements();
+            statements.add("Client accounts viewed");
+            componentFactory.setStatements(statements);
             while (rs.next()) {
                 accounts.add(getAccountFromResultSet(rs));
             }
@@ -63,6 +67,15 @@ public class AccountRepositoryMySQL implements AccountRepository{
             insertStatement.setLong(2, account.getAmountOfMoney());
             insertStatement.setDate(3, new java.sql.Date(account.getDateOfCreation().getTime()));
             insertStatement.executeUpdate();
+            ComponentFactory componentFactory = ComponentFactory.instance(false);
+            List<String> statement = componentFactory.getStatements();
+            statement.add("Account saved with next data : "
+                    + account.getType()
+                    + ", "
+                    + account.getAmountOfMoney()
+                    + ", "
+                    + account.getDateOfCreation());
+            componentFactory.setStatements(statement);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -76,6 +89,9 @@ public class AccountRepositoryMySQL implements AccountRepository{
             Statement statement = connection.createStatement();
             String sql = "DELETE from account where id = " + id;
             statement.executeUpdate(sql);
+            ComponentFactory componentFactory = ComponentFactory.instance(false);
+            List<String> statements = componentFactory.getStatements();
+            statements.add("Account with ID " + id + " deleted");
             return true;
         } catch (SQLException e){
             e.printStackTrace();
@@ -88,13 +104,18 @@ public class AccountRepositoryMySQL implements AccountRepository{
         try{
             Statement statement = connection.createStatement();
             String sql;
+            ComponentFactory componentFactory = ComponentFactory.instance(false);
+            List<String> statements = componentFactory.getStatements();
             if(!account.getType().equals("")) {
                 sql = "UPDATE account SET type = \'" + account.getType() +"\' WHERE id = " + account.getId();
                 statement.executeUpdate(sql);
+                statements.add("Account with ID" + account.getId() + " updated with type " + account.getType());
+                componentFactory.setStatements(statements);
             }
             if(account.getAmountOfMoney() != null){
                 sql = "UPDATE account SET amount_of_money = " + account.getAmountOfMoney() +" WHERE id = " + account.getId();
                 statement.executeUpdate(sql);
+                statements.add("Account with ID " + account.getId() + " updated with amount of money " + account.getAmountOfMoney());
             }
             return true;
         } catch (SQLException e) {
@@ -124,6 +145,11 @@ public class AccountRepositoryMySQL implements AccountRepository{
 
         updateAccount(account1);
         updateAccount(account2);
+
+        ComponentFactory componentFactory = ComponentFactory.instance(false);
+        List<String> statement = componentFactory.getStatements();
+        statement.add("Transfered " + money + " from account " + account1.getId() + " to " + account2.getId());
+        componentFactory.setStatements(statement);
         return true;
     }
 
@@ -133,7 +159,7 @@ public class AccountRepositoryMySQL implements AccountRepository{
 
         Long id = account.getId();
         FileWriter fileWriter = new FileWriter("Bill" + id +".txt");
-        fileWriter.write("Bill for client with account ID " + account.getId() + ": ");
+        fileWriter.write("Bill for client with account ID " + account.getId() + " : ");
         fileWriter.write("\nAccount balance :" + account.getAmountOfMoney());
         if(value > water) {
             account.setAmountOfMoney(value - water);
@@ -156,6 +182,10 @@ public class AccountRepositoryMySQL implements AccountRepository{
         }
 
         fileWriter.close();
+        ComponentFactory componentFactory = ComponentFactory.instance(false);
+        List<String> statement = componentFactory.getStatements();
+        statement.add("Generated bill for account " + id);
+        componentFactory.setStatements(statement);
         return true;
     }
 

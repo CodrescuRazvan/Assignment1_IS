@@ -1,9 +1,12 @@
 package repository.admin;
 
+import factory.ComponentFactory;
 import model.User;
 import model.builder.UserBuilder;
 import repository.EntityNotFoundException;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +97,18 @@ public class AdminRepositoryMySQL implements AdminRepository{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void generateReport() throws IOException {
+        ComponentFactory componentFactory = ComponentFactory.instance(false);
+        List<String> statements = componentFactory.getStatements();
+        FileWriter fileWriter = new FileWriter("Report.txt");
+        for(String statement : statements){
+            fileWriter.write(statement);
+            fileWriter.write("\n");
+        }
+        fileWriter.close();
     }
 
     private User getUserFromResultSet(ResultSet rs) throws SQLException {
