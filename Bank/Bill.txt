@@ -1,0 +1,6 @@
+Bill for client with account ID 2: 
+Account balance :700
+Water bill payed successfully! Bill value 300
+Account balance :400
+Electricity bill payed successfully! Bill value 100
+Account balance :300

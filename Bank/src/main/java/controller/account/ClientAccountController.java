@@ -21,6 +21,7 @@ public class ClientAccountController {
         clientAccountView.setDeleteButtonListener(new ClientAccountController.DeleteButtonListener());
         clientAccountView.setViewButtonListener(new ClientAccountController.ViewButtonListener());
         clientAccountView.setTransferButtonListener(new ClientAccountController.TransferButtonListener());
+        clientAccountView.setBillButtonListener(new ClientAccountController.GenerateBillListener());
     }
 
     private class BackButtonListener implements ActionListener {
@@ -76,6 +77,15 @@ public class ClientAccountController {
         public void actionPerformed(ActionEvent e) {
             clientAccountView.dispose();
             new MoneyTransferController(new MoneyTransferView(), ComponentFactory.instance(false));
+        }
+    }
+
+    private class GenerateBillListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            clientAccountView.dispose();
+            new GenerateBillController(new GenerateBillView(), ComponentFactory.instance(false));
         }
     }
 }

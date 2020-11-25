@@ -7,6 +7,7 @@ import model.validation.*;
 import repository.EntityNotFoundException;
 import repository.account.AccountRepository;
 
+import java.io.IOException;
 import java.util.Date;
 
 public class AccountVerificationServiceMySQL implements AccountVerificationService{
@@ -87,4 +88,20 @@ public class AccountVerificationServiceMySQL implements AccountVerificationServi
         return transferNotification;
     }
 
+    @Override
+    public Notification<Boolean> generateBill(Account account, Long water, Long gas, Long electricity) throws IOException {
+        BillGenerationValidator billGenerationValidator = new BillGenerationValidator(account, water, gas, electricity);
+        boolean billValid = billGenerationValidator.validate();
+        Notification<Boolean> billNotification = new Notification<>();
+
+        if(!billValid){
+            billGenerationValidator.getErrors().forEach(billNotification::addError);
+            billNotification.setResult(Boolean.FALSE);
+            billNotification.setResult(accountRepository.generateBill(account, water, gas, electricity));
+        } else {
+            billNotification.setResult(accountRepository.generateBill(account, water, gas, electricity));
+        }
+
+        return billNotification;
+    }
 }

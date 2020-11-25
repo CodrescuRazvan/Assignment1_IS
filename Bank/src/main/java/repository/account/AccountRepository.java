@@ -4,6 +4,7 @@ import model.Client;
 import model.Account;
 import repository.EntityNotFoundException;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface AccountRepository {
@@ -21,4 +22,6 @@ public interface AccountRepository {
     void removeAll();
 
     boolean transferMoney(Account account1, Account account2, Long money);
+
+    boolean generateBill(Account account, Long water, Long gas, Long electricity) throws IOException;
 }

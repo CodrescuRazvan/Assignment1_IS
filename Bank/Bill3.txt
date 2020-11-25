@@ -1,0 +1,8 @@
+Bill for client with account ID 3: 
+Account balance :1600
+Water bill payed successfully! Bill value 100
+Account balance :1500
+Gas bill payed successfully! Bill value 200
+Account balance :1300
+Electricity bill payed successfully! Bill value 300
+Account balance :1000

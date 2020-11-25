@@ -14,18 +14,19 @@ public class ClientAccountView extends JFrame {
     private JButton btnTransfer;
     private JButton btnView;
     private JButton btnBack;
+    private JButton btnBill;
 
     public ClientAccountView() throws HeadlessException {
         setSize(300, 300);
         setLocationRelativeTo(null);
         initializeFields();
         setLayout(new BoxLayout(getContentPane(), Y_AXIS));
-        //if(employee.getRoles().getRights().contains("create_account")
         add(btnCreate);
         add(btnUpdate);
         add(btnDelete);
         add(btnView);
         add(btnTransfer);
+        add(btnBill);
         add(btnBack);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
@@ -35,8 +36,9 @@ public class ClientAccountView extends JFrame {
         btnCreate = new JButton("Add New Client Account");
         btnUpdate = new JButton("Update Existing Client Account");
         btnDelete = new JButton("Delete Existing Client Account");
-        btnView = new JButton("View Client Account Informations");
+        btnView = new JButton("View Client Account Information");
         btnTransfer = new JButton("Transfer Money Between Accounts");
+        btnBill = new JButton("Generate bill");
         btnBack = new JButton("Back");
     }
 
@@ -62,5 +64,9 @@ public class ClientAccountView extends JFrame {
 
     public void setTransferButtonListener(ActionListener transferButtonListener){
         btnTransfer.addActionListener(transferButtonListener);
+    }
+
+    public void setBillButtonListener(ActionListener billButtonListener) {
+        btnBill.addActionListener(billButtonListener);
     }
 }

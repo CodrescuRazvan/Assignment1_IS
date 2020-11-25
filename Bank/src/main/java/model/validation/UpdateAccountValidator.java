@@ -41,7 +41,7 @@ public class UpdateAccountValidator {
     }
 
     private void validateType(String type){
-        if(!type.equals("checkings") && !type.equals("savings")){
+        if(!type.equals("checkings") && !type.equals("savings") && !type.equals("")){
             errors.add("Invalid Account Type!");
         }
     }

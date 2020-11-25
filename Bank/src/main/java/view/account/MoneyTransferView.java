@@ -47,7 +47,7 @@ public class MoneyTransferView extends JFrame{
         lbIdNd = new JLabel("Receiver Account");
 
         tfMoneyAmount = new JTextField();
-        lbMoneyAmount = new JLabel();
+        lbMoneyAmount = new JLabel("Money Amount");
 
         btnSubmit = new JButton("Submit");
         btnBack = new JButton("Back");

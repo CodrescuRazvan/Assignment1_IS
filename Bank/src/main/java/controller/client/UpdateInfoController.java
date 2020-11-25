@@ -2,13 +2,9 @@ package controller.client;
 
 import factory.ComponentFactory;
 import model.Account;
-import model.Client;
-import model.builder.AccountBuilder;
-import model.builder.ClientBuilder;
 import model.validation.Notification;
 import repository.EntityNotFoundException;
 import repository.account.AccountRepository;
-import repository.client.ClientRepository;
 import service.client.ClientVerificationService;
 import view.client.ClientInfoView;
 import view.client.UpdateInfoView;

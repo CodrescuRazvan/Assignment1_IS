@@ -4,6 +4,8 @@ import model.Account;
 import model.builder.AccountBuilder;
 import repository.EntityNotFoundException;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -122,6 +124,38 @@ public class AccountRepositoryMySQL implements AccountRepository{
 
         updateAccount(account1);
         updateAccount(account2);
+        return true;
+    }
+
+    @Override
+    public boolean generateBill(Account account, Long water, Long gas, Long electricity) throws IOException {
+        Long value = account.getAmountOfMoney();
+
+        Long id = account.getId();
+        FileWriter fileWriter = new FileWriter("Bill" + id +".txt");
+        fileWriter.write("Bill for client with account ID " + account.getId() + ": ");
+        fileWriter.write("\nAccount balance :" + account.getAmountOfMoney());
+        if(value > water) {
+            account.setAmountOfMoney(value - water);
+            updateAccount(account);
+            fileWriter.write("\nWater bill payed successfully! Bill value " + water + "\nAccount balance :" + account.getAmountOfMoney());
+        }
+
+        value = account.getAmountOfMoney();
+        if(value > gas) {
+            account.setAmountOfMoney(value - gas);
+            updateAccount(account);
+            fileWriter.write("\nGas bill payed successfully! Bill value " + gas + "\nAccount balance :" + account.getAmountOfMoney());
+        }
+
+        value = account.getAmountOfMoney();
+        if(value > electricity) {
+            account.setAmountOfMoney(value - electricity);
+            updateAccount(account);
+            fileWriter.write("\nElectricity bill payed successfully! Bill value " + electricity + "\nAccount balance :" + account.getAmountOfMoney());
+        }
+
+        fileWriter.close();
         return true;
     }
 
