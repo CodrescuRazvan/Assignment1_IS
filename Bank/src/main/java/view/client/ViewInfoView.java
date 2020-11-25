@@ -1,16 +1,13 @@
 package view.client;
 
 import factory.ComponentFactory;
-import model.Account;
 import model.Client;
-import repository.account.AccountRepository;
 import repository.client.ClientRepository;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.Date;
 import java.util.List;
 
 public class ViewInfoView extends JFrame{

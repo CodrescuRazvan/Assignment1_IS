@@ -18,8 +18,9 @@ public class ClientRepositoryMySQL implements ClientRepository {
 
     private AccountRepository accountRepository;
 
-    public ClientRepositoryMySQL(Connection connection) {
+    public ClientRepositoryMySQL(Connection connection, AccountRepository accountRepository) {
         this.connection = connection;
+        this.accountRepository = accountRepository;
     }
 
     @Override
@@ -77,29 +78,31 @@ public class ClientRepositoryMySQL implements ClientRepository {
     }
 
     @Override
-    public void updateClient(Client client){
+    public boolean updateClient(Long PNC, String name, String cardNumber, String address, Account client){
         try{
             Statement statement = connection.createStatement();
             String sql;
-            if(!client.getName().equals("")) {
-                sql = "UPDATE client SET name = \'" + client.getName() +"\' WHERE PNC = " + client.getPNC();
+            if(!name.equals("")) {
+                sql = "UPDATE client SET name = \'" + name +"\' WHERE PNC = " + PNC;
                 statement.executeUpdate(sql);
             }
-            if(!client.getCardNumber().equals("")) {
-                sql = "UPDATE client SET card_number = \'" + client.getCardNumber() +"\' WHERE PNC = " + client.getPNC();
+            if(!cardNumber.equals("")) {
+                sql = "UPDATE client SET card_number = " + Long.parseLong(cardNumber) +" WHERE PNC = " + PNC;
                 statement.executeUpdate(sql);
             }
-            if(!client.getAddress().equals("")) {
-                sql = "UPDATE client SET address = \'" + client.getAddress() +"\' WHERE PNC = " + client.getPNC();
+            if(!address.equals("")) {
+                sql = "UPDATE client SET address = \'" + address +"\' WHERE PNC = " + PNC;
                 statement.executeUpdate(sql);
             }
-            if(client.getClientAccount().getId() != null) {
-                sql = "UPDATE client SET account_id = " + client.getClientAccount().getId() +" WHERE PNC = " + client.getPNC();
+            if(client.getId() != null) {
+                sql = "UPDATE client SET account_id = " + client.getId() +" WHERE PNC = " + PNC;
                 statement.executeUpdate(sql);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     @Override
@@ -122,5 +125,6 @@ public class ClientRepositoryMySQL implements ClientRepository {
                 .setClientAccount(accountRepository.findById(rs.getLong("account_id")))
                 .build();
     }
+
 
 }

@@ -14,11 +14,11 @@ public interface AccountRepository {
 
     boolean saveAccount(Account account);
 
-    void deleteAccount(Long id);
+    boolean deleteAccount(Long id);
 
-    void updateAccount(Account account);
+    boolean updateAccount(Account account);
 
     void removeAll();
 
-    void transferMoney(Account account1, Account account2);
+    boolean transferMoney(Account account1, Account account2, Long money);
 }

@@ -1,5 +1,6 @@
 package repository.client;
 
+import model.Account;
 import model.Client;
 import repository.EntityNotFoundException;
 
@@ -34,8 +35,8 @@ public class ClientRepositoryMock implements ClientRepository {
     }
 
     @Override
-    public void updateClient(Client client) {
-
+    public boolean updateClient(Long PNC, String name, String cardNumber, String address, Account client) {
+        return false;
     }
 
     @Override

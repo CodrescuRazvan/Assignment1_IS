@@ -1,20 +1,19 @@
 package model.validation;
 
-import model.Account;
 import model.Client;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientInfoValidator {
+public class UpdateClientValidator {
 
     private static final int PNC_LENGTH = 10;
-    private static final int CARD_NUMBER_LENGTH = 16;
+    private static final int CARD_NUMBER_LENGTH = 10;
 
     private final List<String> errors;
     private final Client client;
 
-    public ClientInfoValidator(Client client) {
+    public UpdateClientValidator(Client client) {
         this.client = client;
         errors = new ArrayList<>();
     }
@@ -25,6 +24,7 @@ public class ClientInfoValidator {
 
     public boolean validate(){
         validatePNC(client.getPNC().toString());
+        validateName(client.getName());
         validateCardNumber(client.getCardNumber());
         return errors.isEmpty();
     }
@@ -38,8 +38,14 @@ public class ClientInfoValidator {
         }
     }
 
+    private void validateName(String name){
+        if(containsDigit(name)){
+            errors.add("Name should not contain numbers!");
+        }
+    }
+
     private void validateCardNumber(String cardNumber){
-        if(cardNumber.length() != CARD_NUMBER_LENGTH){
+        if(cardNumber.length() != CARD_NUMBER_LENGTH && !cardNumber.equals("")){
             errors.add("Invalid Card Number Length!");
         }
         if(containsChar(cardNumber)){
@@ -51,6 +57,17 @@ public class ClientInfoValidator {
         if (s != null && !s.isEmpty()) {
             for (char c : s.toCharArray()) {
                 if (!Character.isDigit(c)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean containsDigit(String s) {
+        if (s != null && !s.isEmpty()) {
+            for (char c : s.toCharArray()) {
+                if (Character.isDigit(c)) {
                     return true;
                 }
             }

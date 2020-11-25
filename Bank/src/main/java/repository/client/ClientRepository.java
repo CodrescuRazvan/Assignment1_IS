@@ -1,5 +1,6 @@
 package repository.client;
 
+import model.Account;
 import model.Client;
 import repository.EntityNotFoundException;
 
@@ -13,7 +14,7 @@ public interface ClientRepository {
 
     boolean saveClient(Client client);
 
-    void updateClient(Client client);
+    boolean updateClient(Long PNC, String name, String cardNumber, String address, Account client);
 
     void removeAll();
 

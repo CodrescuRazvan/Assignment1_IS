@@ -20,7 +20,7 @@ public class ClientAccountController {
         clientAccountView.setUpdateButtonListener(new ClientAccountController.UpdateButtonListener());
         clientAccountView.setDeleteButtonListener(new ClientAccountController.DeleteButtonListener());
         clientAccountView.setViewButtonListener(new ClientAccountController.ViewButtonListener());
-
+        clientAccountView.setTransferButtonListener(new ClientAccountController.TransferButtonListener());
     }
 
     private class BackButtonListener implements ActionListener {
@@ -75,7 +75,7 @@ public class ClientAccountController {
         @Override
         public void actionPerformed(ActionEvent e) {
             clientAccountView.dispose();
-            new MoneyTransferController()
+            new MoneyTransferController(new MoneyTransferView(), ComponentFactory.instance(false));
         }
     }
 }

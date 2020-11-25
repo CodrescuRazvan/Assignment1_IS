@@ -3,12 +3,15 @@ package controller.client;
 import factory.ComponentFactory;
 import model.Client;
 import model.builder.ClientBuilder;
+import model.validation.Notification;
 import repository.EntityNotFoundException;
 import repository.account.AccountRepository;
 import repository.client.ClientRepository;
+import service.client.ClientVerificationService;
 import view.client.AddInfoView;
 import view.client.ClientInfoView;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,13 +19,11 @@ import java.awt.event.ActionListener;
 public class AddInfoController {
 
     private final AddInfoView addInfoView;
-    private final AccountRepository accountRepository;
-    private final ClientRepository clientRepository;
+    private final ClientVerificationService clientVerificationService;
 
     public AddInfoController(AddInfoView addInfoView, ComponentFactory componentFactory) throws HeadlessException {
         this.addInfoView = addInfoView;
-        this.accountRepository = componentFactory.getAccountRepository();
-        this.clientRepository = componentFactory.getClientRepository();
+        this.clientVerificationService = componentFactory.getClientVerificationService();
         addInfoView.setSubmitButtonListener(new SubmitButtonListener());
         addInfoView.setBackButtonListener(new BackButtonListener());
     }
@@ -35,19 +36,20 @@ public class AddInfoController {
             String name = addInfoView.getName();
             String cardNumber = addInfoView.getCardNumber();
             String address = addInfoView.getAddress();
-            Long accountId = Long.parseLong(addInfoView.getAccountId());
 
-            try {
-                Client client = new ClientBuilder()
-                        .setPNC(PNC)
-                        .setName(name)
-                        .setCardNumber(cardNumber)
-                        .setAddress(address)
-                        .setClientAccount(accountRepository.findById(accountId))
-                        .build();
-                clientRepository.saveClient(client);
-            } catch (EntityNotFoundException entityNotFoundException) {
-                entityNotFoundException.printStackTrace();
+            Notification<Boolean> clientNotification = null;
+            try{
+                clientNotification = clientVerificationService.saveClient(PNC, name, cardNumber, address);
+            } catch (Exception e1){
+                e1.printStackTrace();
+            }
+
+            if(clientNotification != null){
+                if(clientNotification.hasErrors()){
+                    JOptionPane.showMessageDialog(addInfoView.getContentPane(), clientNotification.getFormattedErrors());
+                } else {
+                    JOptionPane.showMessageDialog(addInfoView.getContentPane(), "Client added!");
+                }
             }
         }
     }

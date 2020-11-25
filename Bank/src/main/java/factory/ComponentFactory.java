@@ -11,6 +11,10 @@ import repository.security.RightsRolesRepository;
 import repository.security.RightsRolesRepositoryMySQL;
 import repository.user.UserRepository;
 import repository.user.UserRepositoryMySQL;
+import service.account.AccountVerificationService;
+import service.account.AccountVerificationServiceMySQL;
+import service.client.ClientVerificationService;
+import service.client.ClientVerificationServiceMySQL;
 import service.user.AuthenticationService;
 import service.user.AuthenticationServiceMySQL;
 
@@ -25,6 +29,8 @@ public class ComponentFactory {
     private final ClientRepository clientRepository;
     private final AccountRepository accountRepository;
     private final AdminRepository adminRepository;
+    private final AccountVerificationService accountVerificationService;
+    private final ClientVerificationService clientVerificationService;
 
     private static ComponentFactory instance;
 
@@ -40,9 +46,11 @@ public class ComponentFactory {
         this.rightsRolesRepository = new RightsRolesRepositoryMySQL(connection);
         this.userRepository = new UserRepositoryMySQL(connection, rightsRolesRepository);
         this.accountRepository = new AccountRepositoryMySQL(connection);
-        this.clientRepository = new ClientRepositoryMySQL(connection);
+        this.clientRepository = new ClientRepositoryMySQL(connection, accountRepository);
         this.adminRepository = new AdminRepositoryMySQL(connection);
         this.authenticationService = new AuthenticationServiceMySQL(this.userRepository, this.rightsRolesRepository);
+        this.accountVerificationService = new AccountVerificationServiceMySQL(this.accountRepository);
+        this.clientVerificationService = new ClientVerificationServiceMySQL(this.clientRepository);
     }
 
     public AuthenticationService getAuthenticationService() {
@@ -67,5 +75,13 @@ public class ComponentFactory {
 
     public AdminRepository getAdminRepository() {
         return adminRepository;
+    }
+
+    public AccountVerificationService getAccountVerificationService() {
+        return accountVerificationService;
+    }
+
+    public ClientVerificationService getClientVerificationService() {
+        return clientVerificationService;
     }
 }

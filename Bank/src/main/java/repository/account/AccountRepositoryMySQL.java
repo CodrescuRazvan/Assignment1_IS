@@ -69,18 +69,20 @@ public class AccountRepositoryMySQL implements AccountRepository{
     }
 
     @Override
-    public void deleteAccount(Long id){
+    public boolean deleteAccount(Long id){
         try{
             Statement statement = connection.createStatement();
             String sql = "DELETE from account where id = " + id;
             statement.executeUpdate(sql);
+            return true;
         } catch (SQLException e){
             e.printStackTrace();
         }
+        return false;
     }
 
     @Override
-    public void updateAccount(Account account) {
+    public boolean updateAccount(Account account) {
         try{
             Statement statement = connection.createStatement();
             String sql;
@@ -92,8 +94,10 @@ public class AccountRepositoryMySQL implements AccountRepository{
                 sql = "UPDATE account SET amount_of_money = " + account.getAmountOfMoney() +" WHERE id = " + account.getId();
                 statement.executeUpdate(sql);
             }
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -109,8 +113,16 @@ public class AccountRepositoryMySQL implements AccountRepository{
     }
 
     @Override
-    public void transferMoney(Account account1, Account account2){
+    public boolean transferMoney(Account account1, Account account2, Long money){
+        Long value1 = account1.getAmountOfMoney();
+        Long value2 = account2.getAmountOfMoney();
 
+        account1.setAmountOfMoney(value1 - money);
+        account2.setAmountOfMoney(value2 + money);
+
+        updateAccount(account1);
+        updateAccount(account2);
+        return true;
     }
 
 
